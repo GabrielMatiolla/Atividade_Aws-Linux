@@ -32,4 +32,60 @@ Repositório para realizar a atividade de linux e AWS do programa de bolsas da c
   - O script deve conter - Data HORA + nome do serviço + Status + mensagem personalizada de ONLINE ou offline
   - O script deve gerar 2 arquivos de saida: 1 para o serviço online e 1 para o serviço OFFLINE
   - Preparar a execução automatizada do script a cada 5 minutos
+---
+## Instruções passo a passo
 
+### Gerar uma chave pública de acesso e anexá-la a instância EC2.
+- Abrir o console da AWS no serviço de EC2 e clicar em "Pares de chaves" no menu a esquerda.
+- Clicar em "Criar pares de chaves".
+- Colocar um nome na chave e clicar em "Criar par de chaves".
+- Salvar o arquivo .pem em uma pasta segura.
+- Clicar em "instâncias" no menu esquerdo.
+- Clicar em "Executar instâncias".
+- Selecionar a imagem Amazon Linux 2 AMI, SSD volume type.
+- Selecionar a Familía t3.small.
+- Selecionar a chave que foi gerada posteriormente
+- Selecionar 16 GB de armazenamento gp2 (SSD).
+- Clicar em "Executar instância"
+
+### Alocar um endereço IP elástico a instância EC2.
+
+- Abrir o console da AWS no serviço de EC2 e clicar em "IPs elásticos" no menu a esquerda.
+- Clicar em "Alocar endereço IP elástico".
+- Selecionar o ip alocado e clicar em "Ações" > "Associar endereço IP elástico".
+- Selecionar a instância criada anteriormente e clicar em "Associar".
+
+### Configurar gateway de internet.
+
+- Abrir o console da AWS no serviço de VPC e clicar em "Gateways de internet" no menu a esquerda.
+- Clicar em "Criar gateway de internet".
+- Escolher um nome para o gateway e clicar em "Criar gateway de internet".
+- Selecionar o gateway e clicar em "Ações" > "Associar a VPC".
+- Selecionar a VPC criada anteriormente e clicar em "Associar".
+
+### Configurações de rota de internet.
+
+- Abrir o console da AWS no serviço de VPC e clicar em "Tabelas de rotas" no menu a esquerda.
+- Selecionar a tabela de rotas da VPC da instância criada anteriormente.
+- Clicar em "Ações" > "Editar rotas".
+- Clicar em "Adicionar rota".
+- Configurar da seguinte forma:
+    - Destino: 0.0.0.0/0
+    - Alvo: Selecionar o gateway de internet criado anteriormente
+- Clicar em "Salvar alterações".
+
+### Configurações de regras de segurança.
+
+- Abrir o console da AWS no serviço de EC2 e clicar em "Segurança" > "Grupos de segurança" no menu a esquerda.
+- Selecionar o grupo de segurança da instância criada anteriormente.
+- Clicar em "Editar regras de segurança".
+- Configurar as regras:
+    Tipo | Protocolo | Intervalo de portas | Origem | Descrição
+    ---|---|---|---|---
+    SSH | TCP | 22 | 0.0.0.0/0 | SSH
+    TCP personalizado | TCP | 443 | 0.0.0.0/0 | HTTPS
+    TCP personalizado | TCP | 80 | 0.0.0.0/0 | HTTP
+    UDP personalizado | UDP | 111 | 0.0.0.0/0 | RPC
+    TCP personalizado | TCP | 111 | 0.0.0.0/0 | RPC
+    UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
+    TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
