@@ -35,7 +35,7 @@ Repositório para realizar a atividade de linux e AWS do programa de bolsas da c
 ---
 ## Instruções passo a passo
 
-### Gerar uma chave pública de acesso e anexá-la a instância EC2.
+### Gerar uma chave pública e uma instância EC2 e anexar a chave pública a instância criada.
 - Abrir o console da AWS no serviço de EC2 e clicar em "Pares de chaves" no menu a esquerda.
 - Clicar em "Criar pares de chaves".
 - Colocar um nome na chave e clicar em "Criar par de chaves".
@@ -54,25 +54,6 @@ Repositório para realizar a atividade de linux e AWS do programa de bolsas da c
 - Clicar em "Alocar endereço IP elástico".
 - Selecionar o ip alocado e clicar em "Ações" > "Associar endereço IP elástico".
 - Selecionar a instância criada anteriormente e clicar em "Associar".
-
-### Configurar gateway de internet.
-
-- Abrir o console da AWS no serviço de VPC e clicar em "Gateways de internet" no menu a esquerda.
-- Clicar em "Criar gateway de internet".
-- Escolher um nome para o gateway e clicar em "Criar gateway de internet".
-- Selecionar o gateway e clicar em "Ações" > "Associar a VPC".
-- Selecionar a VPC criada anteriormente e clicar em "Associar".
-
-### Configurações de rota de internet.
-
-- Abrir o console da AWS no serviço de VPC e clicar em "Tabelas de rotas" no menu a esquerda.
-- Selecionar a tabela de rotas da VPC da instância criada anteriormente.
-- Clicar em "Ações" > "Editar rotas".
-- Clicar em "Adicionar rota".
-- Configurar da seguinte forma:
-    - Destino: 0.0.0.0/0
-    - Alvo: Selecionar o gateway de internet criado anteriormente
-- Clicar em "Salvar alterações".
 
 ### Configurações de regras de segurança.
 
