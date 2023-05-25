@@ -91,7 +91,7 @@ Repositório para realizar a atividade de linux e AWS do programa de bolsas da c
     UDP personalizado | UDP | 2049 | 0.0.0.0/0 | NFS
     TCP personalizado | TCP | 2049 | 0.0.0.0/0 | NFS
     
-## Requisitos Linux
+## Instruções Linux
  
 ### Configurar o NFS entregue
 
