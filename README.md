@@ -93,17 +93,55 @@ Repositório para realizar a atividade de linux e AWS do programa de bolsas da c
     
 ## Requisitos Linux
  
-### Configurar o NFS entregue;
- - Navegue até o serviço EFS
- - Clique em "Criar sistema de arquivos"
- - Atribua um nome, caso queira, e clique em "Criar"
+### Configurar o NFS entregue
+
+ - Navegue até o serviço EFS.
+ - Clique em "Criar sistema de arquivos".
+ - Atribua um nome, caso queira, e clique em "Criar".
  - Clique no ID do sistema de arquivos ao qual deseja criar um ponto de montagem.
  - Na guia "Ponto de acesso", clique no botão "Criar ponto de acesso", defina um nome, caso deseje, e clique em "Criar ponto de acesso".
  - Na guia "Rede", clique em "Gerenciar", e atribua o security group criado anteriormente às subnets disponíveis.
- - Com tudo configurado, deve-se anotar o "Nome de DNS" do sistema de arquivos
- - Ao logar à instância por meio de ssh, deve-se criar o diretório /mnt/nfs
+ - Com tudo configurado, deve-se anotar o "Nome de DNS" do sistema de arquivos.
+ - Ao logar à instância por meio de ssh, deve-se criar o diretório /mnt/nfs.
  - Depois deve-se montar o sistema de arquivos, por meio do comando ``` sudo mount -t nfs4 <DNS_Name>:/ /mnt/nfs ```
  - Para automatizar a montagem, deve-se instalar o driver do Amazon EFS: ```sudo yum install amazon-efs-utils -y```
  - Depois, deve-se editar o arquivo /etc/fstab, inserindo a seguinte linha: ```<DNS_Name>:/ /mnt/nfs efs defaults,_netdev 0 0```
+
+### Criar um diretorio dentro do filesystem do NFS com seu nome
+
+- Após a montagem do NFS, deve-se usar o comando ```sudo mkdir /mnt/nfs/<seu_nome>``` para criar a pasta com seu nome.
+
+### Subir um apache no servidor - o apache deve estar online e rodando
+
+- Logado na instância, deve-se atualizar o pacote do sistema: ```sudo yum update -y```
+- Instale o servidor web Apache usando o seguinte comando: ```sudo yum install httpd -y```
+- Inicie o Apache usando o seguinte comando: ```sudo systemctl start httpd```
+- Verifique se o Apache está em execução usando o seguinte comando: ```sudo systemctl status httpd```
+- use o seguinte comando: ```sudo systemctl enable httpd```, para garantir que o apache seja iniciado automaticamente na inicialização do sistema.
+
+### Criar um script que valide se o serviço esta online e envie o resultado da validação para o seu diretorio no nfs; O script deve conter - Data HORA + nome do serviço + Status + mensagem personalizada de ONLINE ou offline; O script deve gerar 2 arquivos de saida: 1 para o serviço online e 1 para o serviço OFFLINE
+
+- Deve ser criado o arquivo check_apache.sh, com o seguinte código:
+
+``` Bash
+#!/bin/bash
+
+export TZ=America/Sao_Paulo
+
+DATE=$(date '+%d-%m-%Y %H:%M:%S')
+
+if systemctl is-active --quiet httpd; then
+	STATUS="Online"
+	MESSAGE="O serviço Apache está funcionando normalmente."
+	FILENAME="apache_online.txt"
+else
+	STATUS="Offline"
+	MESSAGE="O serviço Apache não está funcionando normalmente."
+	FILENAME="apache_offline.txt"
+fi
+
+echo "$DATE httpd $STATUS - $MESSAGE" | sudo tee -a /mnt/nfs/$FILENAME
+```
+
     
     
