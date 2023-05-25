@@ -132,16 +132,30 @@ DATE=$(date '+%d-%m-%Y %H:%M:%S')
 
 if systemctl is-active --quiet httpd; then
 	STATUS="Online"
-	MESSAGE="O serviço Apache está funcionando normalmente."
+	MESSAGE="O apache está online."
 	FILENAME="apache_online.txt"
 else
 	STATUS="Offline"
-	MESSAGE="O serviço Apache não está funcionando normalmente."
+	MESSAGE="O apache está offline."
 	FILENAME="apache_offline.txt"
 fi
 
 echo "$DATE httpd $STATUS - $MESSAGE" | sudo tee -a /mnt/nfs/$FILENAME
 ```
 
-    
+#### Script para execução automatizada a cada 5 minutos.
+- Para automatizar a execução do script, deve ser usado o comando ```crontab -e```
+- Ao editar o arquivo, deve ser inserida a seguinte linha: ```*/5 * * * * /<caminho_do_script>/script.sh```
+
+Seguindo o passo passo, as configurações estarão funcionando normalmente.
+
+---
+## Referências
+
+- [Documentação EFS](https://docs.aws.amazon.com/pt_br/efs/latest/ug/whatisefs.html)
+- [Documentação apache](https://httpd.apache.org/docs/2.4/)
+
+
+
+
     
