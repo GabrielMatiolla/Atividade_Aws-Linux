@@ -146,10 +146,7 @@ if systemctl is-active --quiet httpd; then
 	MESSAGE="O apache está online."
 	FILENAME="apache_online.txt"
 else
-# Caso o serviço httpd não esteja ativo, as ações seguintes serão realizadas:
-# STATUS="Offline": A variável STATUS recebe o valor "offline".
-# MESSAGE="O apache está offline.": A variável MESSAGE recebe uma mensagem personalizada informando que o apache está offline.
-# FILENAME="apache_offline.txt": A variável FILENAME recebe o nome do arquivo de saída que será usado para armazenar o resultado da validação offline.
+# Caso o serviço httpd não esteja ativo.
 	STATUS="Offline"
 	MESSAGE="O apache está offline."
 	FILENAME="apache_offline.txt"
@@ -168,8 +165,15 @@ echo "$DATE httpd $STATUS - $MESSAGE" | sudo tee -a /mnt/nfs/$FILENAME
 
 
 #### Script para execução automatizada a cada 5 minutos.
+
 - Para automatizar a execução do script, deve ser usado o comando ```crontab -e```
 - Ao editar o arquivo, deve ser inserida a seguinte linha: ```*/5 * * * * /<caminho_do_script>/script.sh```
+
+#### Para garantir que a montagem da EFS seja feita automaticamente na sua instância EC2 após uma reinicialização faça o passo a passo a seguir.
+
+- Abra o arquivo "/etc/fstab" na sua instância EC2 usando um editor de texto, como o "vi" ou "nano" ```sudo vi /etc/fstab```
+- Adicione uma linha no arquivo "/etc/fstab" para fazer a montagem automática da EFS. A linha deve ter o seguinte formato ```/mnt/nfs <DNS_name> nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0```
+- Subistitua o DNS_name pelo DNS do sistema de arquivos DNS que voce criou.
 
 Seguindo o passo passo, as configurações estarão funcionando normalmente.
 
