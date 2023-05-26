@@ -162,6 +162,10 @@ fi
 # O nome do arquivo é determinado com base no valor da variável FILENAME definida anteriormente.
 echo "$DATE httpd $STATUS - $MESSAGE" | sudo tee -a /mnt/nfs/$FILENAME
 ```
+- Depois de criar o script de validação é necessario dar permissão de execução ao mesmo usando o comando: ```sudo chmod +x check_apache.sh```
+- Para executar o script basta usar o seguinte comando: ```./check_apache.sh```
+- Para executar o script fora do diretorio que ele pertence basta utilizar o seguinte comando: ```/<diretorio_onde_esta_o_script>/check_apache.sh```
+
 
 #### Script para execução automatizada a cada 5 minutos.
 - Para automatizar a execução do script, deve ser usado o comando ```crontab -e```
