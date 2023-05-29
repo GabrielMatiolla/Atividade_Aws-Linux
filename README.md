@@ -169,7 +169,7 @@ echo "$DATE httpd $STATUS - $MESSAGE" | sudo tee -a /mnt/nfs/$FILENAME
 - Para automatizar a execução do script, deve ser usado o comando ```crontab -e```
 - Ao editar o arquivo, deve ser inserida a seguinte linha: ```*/5 * * * * /<caminho_do_script>/script.sh```
 
-#### Para garantir que a montagem da EFS seja feita automaticamente na sua instância EC2 após uma reinicialização faça o passo a passo a seguir.
+#### Caso o outro modo da montagem do EFS automatizada feito anteriormente nao funcione use esse.
 
 - Abra o arquivo "/etc/fstab" na sua instância EC2 usando um editor de texto, como o "vi" ou "nano" ```sudo vi /etc/fstab```
 - Adicione uma linha no arquivo "/etc/fstab" para fazer a montagem automática da EFS. A linha deve ter o seguinte formato ```/mnt/nfs <DNS_name> nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0```
